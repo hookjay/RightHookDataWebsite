@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Right Hook Data — Custom AI Software for Your Business</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0f;
+      --navy: #0d1117;
+      --amber: #f5a623;
+      --amber-dim: #c4831a;
+      --white: #f0ede6;
+      --muted: #6b7280;
+      --border: rgba(245,166,35,0.15);
+      --card: rgba(255,255,255,0.03);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,15,0.92);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .logo span { color: var(--amber); }
+    nav a.cta-nav {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-decoration: none;
+      border: 1px solid var(--amber);
+      padding: 0.5rem 1.4rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    nav a.cta-nav:hover { background: var(--amber); color: var(--black); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 4rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 50%, rgba(245,166,35,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(245,166,35,0.04) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9.5rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--amber);
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+    }
+    .hero-sub {
+      margin-top: 2.5rem;
+      font-size: 1.15rem;
+      font-weight: 300;
+      max-width: 560px;
+      color: rgba(240,237,230,0.7);
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-actions {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .btn-primary {
+      background: var(--amber);
+      color: var(--black);
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.9rem 2.2rem;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    .btn-ghost {
+      color: var(--white);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .btn-ghost:hover { opacity: 1; }
+
+    .hero-ticker {
+      position: absolute;
+      bottom: 3rem;
+      left: 0; right: 0;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 0;
+      opacity: 0;
+      animation: fadeIn 1s 1.2s forwards;
+    }
+    .ticker-track {
+      display: flex;
+      gap: 4rem;
+      white-space: nowrap;
+      animation: ticker 30s linear infinite;
+    }
+    .ticker-track span {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      opacity: 0.6;
+    }
+    .ticker-track span.dot { color: var(--muted); }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 7rem 4rem; }
+    .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em {
+      font-style: italic;
+      font-family: 'Instrument Serif', serif;
+      color: var(--amber);
+    }
+
+    /* ── PROBLEM SECTION ── */
+    .problem {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .problem-list { list-style: none; margin-top: 2rem; }
+    .problem-list li {
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+      color: rgba(240,237,230,0.75);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .problem-list li .x {
+      color: var(--amber);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .problem-quote {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1.4;
+      color: var(--white);
+      border-left: 3px solid var(--amber);
+      padding-left: 2rem;
+    }
+    .problem-quote strong {
+      font-style: normal;
+      color: var(--amber);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1em;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── SERVICES ── */
+    .services { max-width: 1200px; margin: 0 auto; }
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      gap: 2rem;
+    }
+    .services-header p {
+      max-width: 380px;
+      color: rgba(240,237,230,0.6);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .service-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .service-card {
+      background: var(--black);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .service-card:hover { background: rgba(245,166,35,0.04); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: rgba(245,166,35,0.12);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color 0.3s;
+    }
+    .service-card:hover .service-num { color: rgba(245,166,35,0.25); }
+    .service-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: rgba(240,237,230,0.6);
+      line-height: 1.7;
+    }
+    .service-tag {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem;
+    }
+
+    /* ── WHY NOW ── */
+    .why-now {
+      background: linear-gradient(135deg, rgba(245,166,35,0.06) 0%, transparent 60%), var(--navy);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .why-now-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .stat-stack { display: flex; flex-direction: column; gap: 2.5rem; }
+    .stat {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat:last-child { border-bottom: none; padding-bottom: 0; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--amber);
+      flex-shrink: 0;
+      width: 120px;
+    }
+    .stat-text h4 {
+      font-weight: 500;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      color: var(--white);
+    }
+    .stat-text p { font-size: 0.85rem; color: rgba(240,237,230,0.55); line-height: 1.6; }
+    .why-copy p {
+      font-size: 1.05rem;
+      color: rgba(240,237,230,0.7);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .why-copy strong { color: var(--white); font-weight: 500; }
+
+    /* ── PROCESS ── */
+    .process { max-width: 1200px; margin: 0 auto; }
+    .process-steps {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      right: 2rem;
+      height: 1px;
+      background: linear-gradient(90deg, var(--amber), rgba(245,166,35,0.2));
+    }
+    .step {
+      padding: 0 2rem 0 0;
+      padding-top: 4.5rem;
+      position: relative;
+    }
+    .step-dot {
+      position: absolute;
+      top: calc(2rem - 6px);
+      left: 0;
+      width: 13px; height: 13px;
+      background: var(--amber);
+      border-radius: 50%;
+    }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      margin-bottom: 0.75rem;
+    }
+    .step h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+    }
+    .step p { font-size: 0.85rem; color: rgba(240,237,230,0.55); line-height: 1.65; }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(245,166,35,0.08) 0%, transparent 70%);
+    }
+    .cta-section .label { justify-content: center; display: flex; }
+    .cta-section .section-title { font-size: clamp(3rem, 7vw, 7rem); }
+    .cta-section p {
+      max-width: 500px;
+      margin: 1.5rem auto 3rem;
+      color: rgba(240,237,230,0.6);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    .cta-contact {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .contact-pill {
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: rgba(240,237,230,0.5);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    footer a { color: var(--amber); text-decoration: none; font-size: 0.8rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      section { padding: 5rem 2rem; }
+      .hero { padding: 8rem 2rem 8rem; }
+      .problem-inner,
+      .why-now-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .service-cards { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .process-steps::before { display: none; }
+      .step { padding-top: 1rem; }
+      .step-dot { display: none; }
+      .services-header { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="logo">Right Hook <span>Data</span></a>
+    <a href="mailto:jay@righthookdata.com?subject=Let%27s%20Talk" class="cta-nav">Let's Talk</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <p class="hero-eyebrow">Austin, Texas · AI & Custom Software</p>
+    <h1>Stop Waiting<br>on a <em>Roadmap.</em></h1>
+    <p class="hero-sub">Your competitors are moving faster because their tools fit exactly how they work. We build custom AI-powered software for your business — in weeks, not quarters.</p>
+    <div class="hero-actions">
+      <a href="mailto:jay@righthookdata.com?subject=Let%27s%20Talk" class="btn-primary">Start the Conversation</a>
+      <a href="#services" class="btn-ghost">See What We Build →</a>
+    </div>
+    <div class="hero-ticker">
+      <div class="ticker-track">
+        <span>Custom AI Software</span><span class="dot">·</span>
+        <span>Automated Workflows</span><span class="dot">·</span>
+        <span>Data Intelligence</span><span class="dot">·</span>
+        <span>No More SaaS Compromises</span><span class="dot">·</span>
+        <span>Built for Your Business</span><span class="dot">·</span>
+        <span>Austin, Texas</span><span class="dot">·</span>
+        <span>Custom AI Software</span><span class="dot">·</span>
+        <span>Automated Workflows</span><span class="dot">·</span>
+        <span>Data Intelligence</span><span class="dot">·</span>
+        <span>No More SaaS Compromises</span><span class="dot">·</span>
+        <span>Built for Your Business</span><span class="dot">·</span>
+        <span>Austin, Texas</span><span class="dot">·</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem">
+    <div class="problem-inner">
+      <div class="reveal">
+        <p class="label">The Problem</p>
+        <h2 class="section-title">SaaS was built for<br><em>everyone.</em><br>Not for you.</h2>
+        <ul class="problem-list">
+          <li><span class="x">→</span> You're paying for features you'll never use</li>
+          <li><span class="x">→</span> You're bending your process to fit the software</li>
+          <li><span class="x">→</span> You're waiting on a product roadmap for features you needed yesterday</li>
+          <li><span class="x">→</span> Your team has learned 6 tools that still don't talk to each other</li>
+          <li><span class="x">→</span> Your competitors are moving faster</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p class="problem-quote">
+          "We are living through a <strong>generational shift.</strong> The businesses that adopt AI-native custom software now will define their industries for the next decade."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" style="padding: 7rem 4rem;">
+    <div class="services">
+      <div class="services-header reveal">
+        <div>
+          <p class="label">What We Build</p>
+          <h2 class="section-title">Exactly what<br>you <em>need.</em></h2>
+        </div>
+        <p>We don't sell software licenses. We build the specific tool your business requires — then hand you the keys. No recurring fees. No roadmap dependencies. Yours.</p>
+      </div>
+      <div class="service-cards">
+        <div class="service-card reveal">
+          <div class="service-num">01</div>
+          <h3>Custom AI Applications</h3>
+          <p>AI that's trained on your data, your processes, your terminology. Not a generic chatbot — a system that knows your business and helps your team move faster every single day.</p>
+          <span class="service-tag">LLM Integration · RAG · Fine-tuning</span>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">02</div>
+          <h3>Workflow Automation</h3>
+          <p>Your team is spending hours on work that software should be doing. We map your operations and build automation that eliminates the manual bottlenecks — forever.</p>
+          <span class="service-tag">Process Automation · Integrations · APIs</span>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">03</div>
+          <h3>Data Intelligence</h3>
+          <p>You have the data. We build the infrastructure and dashboards to make it actually useful — so decisions get made on facts, not gut feeling or outdated reports.</p>
+          <span class="service-tag">Dashboards · Data Pipelines · Analytics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY NOW -->
+  <section class="why-now">
+    <div class="why-now-inner">
+      <div class="stat-stack reveal">
+        <div class="stat">
+          <div class="stat-num">10×</div>
+          <div class="stat-text">
+            <h4>Speed to deploy</h4>
+            <p>Custom AI software built in weeks, not the 12–18 month SaaS implementation cycles your team dreads.</p>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100%</div>
+          <div class="stat-text">
+            <h4>Built for your workflow</h4>
+            <p>No compromises. No "good enough." Software that fits the way your team actually works.</p>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">$0</div>
+          <div class="stat-text">
+            <h4>Recurring license fees</h4>
+            <p>You own what we build. No per-seat pricing. No surprise renewals. No vendor lock-in.</p>
+          </div>
+        </div>
+      </div>
+      <div class="why-copy reveal reveal-delay-2">
+        <p class="label">Why Now</p>
+        <h2 class="section-title">This is the<br><em>moment.</em></h2>
+        <p>AI has crossed a threshold. For the first time in history, a small business can have software that was previously only accessible to Fortune 500 companies with 100-person engineering teams.</p>
+        <p>The window to gain this advantage is <strong>open right now.</strong> The businesses that move first will set the pace. The ones that wait will spend the next decade catching up.</p>
+        <p>We're not here to sell you a subscription. We're here to <strong>build you a competitive advantage</strong> — one that's yours to keep.</p>
+        <a href="mailto:jay@righthookdata.com?subject=Let%27s%20Talk" class="btn-primary" style="margin-top: 1rem;">Get Started →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section style="padding: 7rem 4rem;">
+    <div class="process">
+      <div class="reveal" style="max-width: 600px;">
+        <p class="label">How It Works</p>
+        <h2 class="section-title">Fast. Focused.<br><em>Yours.</em></h2>
+      </div>
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="step-dot"></div>
+          <div class="step-num">Step 01</div>
+          <h4>Discovery Call</h4>
+          <p>We learn your business, your bottlenecks, and where AI can create the most immediate leverage. No pitch deck. Just a real conversation.</p>
+        </div>
+        <div class="step reveal reveal-delay-1">
+          <div class="step-dot"></div>
+          <div class="step-num">Step 02</div>
+          <h4>Scoped Build Plan</h4>
+          <p>A clear, line-item proposal: what we're building, how long it takes, what it costs. No surprises. No scope creep.</p>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-dot"></div>
+          <div class="step-num">Step 03</div>
+          <h4>Build & Iterate</h4>
+          <p>We ship fast and iterate with your team. You see progress in days. Feedback loops are short. The build reflects how you actually work.</p>
+        </div>
+        <div class="step reveal reveal-delay-3">
+          <div class="step-dot"></div>
+          <div class="step-num">Step 04</div>
+          <h4>You Own It</h4>
+          <p>We hand over the keys. Full documentation. Trained team. Software that's yours — no dependencies on us to keep it running.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <p class="label">Ready to Move?</p>
+    <h2 class="section-title reveal">Stop Waiting.<br><em>Start Building.</em></h2>
+    <p class="reveal reveal-delay-1">The conversation is free. The advantage is real. Let's talk about what custom AI software could do for your business.</p>
+    <div class="cta-contact reveal reveal-delay-2">
+      <a href="mailto:jay@righthookdata.com?subject=Let%27s%20Talk" class="btn-primary">Email Jay Directly</a>
+      <span class="contact-pill">or call <a href="tel:5126956633" style="color: var(--amber);">512-695-6633</a></span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Right Hook Data · Austin, Texas</p>
+    <a href="mailto:jay@righthookdata.com">jay@righthookdata.com</a>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
