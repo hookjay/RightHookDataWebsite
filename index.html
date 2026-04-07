@@ -607,6 +607,76 @@
       .spa-visual-layout { grid-template-columns: 80px 1fr; }
     }
 
+    /* ── PDF Sign Visual ── */
+    .pdf-visual {
+      background: linear-gradient(135deg, #0d1117 0%, #101520 50%, #0d1117 100%);
+    }
+    .pdf-visual-layout {
+      position: absolute;
+      inset: 0;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      opacity: 0.9;
+    }
+    .pdf-doc {
+      background: rgba(245,166,35,0.04);
+      border: 1px solid rgba(245,166,35,0.1);
+      padding: 0.75rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .pdf-line {
+      height: 5px;
+      background: rgba(240,237,230,0.08);
+      border-radius: 2px;
+    }
+    .pdf-line.short { width: 55%; }
+    .pdf-line.med { width: 75%; }
+    .pdf-line.full { width: 100%; }
+    .pdf-sig-area {
+      margin-top: auto;
+      border-top: 1px dashed rgba(245,166,35,0.25);
+      padding-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pdf-sig-label {
+      font-size: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+    .pdf-sig-scrawl {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--amber);
+      opacity: 0.85;
+    }
+    .pdf-toolbar {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .pdf-tool-btn {
+      font-size: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      border: 1px solid rgba(245,166,35,0.12);
+      padding: 0.25rem 0.5rem;
+      background: rgba(245,166,35,0.03);
+    }
+    .pdf-tool-btn.active {
+      color: var(--amber);
+      border-color: rgba(245,166,35,0.35);
+      background: rgba(245,166,35,0.07);
+    }
+
     /* ── WHY NOW ── */
     .why-now {
       background: linear-gradient(135deg, rgba(245,166,35,0.06) 0%, transparent 60%), var(--navy);
@@ -1004,6 +1074,52 @@
               <li>Open/close day workflows and reporting</li>
             </ul>
             <a href="http://spamanagement.righthookdata.com/" target="_blank" rel="noopener" class="app-link">Launch App →</a>
+          </div>
+        </div>
+
+        <!-- PDF Sign App -->
+        <div class="app-card reveal reveal-delay-2" style="grid-column: span 2;">
+          <div class="app-card-browser">
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+            <span class="browser-url">hookjay.github.io/sign-pdf_app.html</span>
+          </div>
+          <div class="app-card-visual pdf-visual" style="height:180px;">
+            <div class="pdf-visual-layout">
+              <div class="pdf-toolbar">
+                <div class="pdf-tool-btn active">✏ Draw Signature</div>
+                <div class="pdf-tool-btn">T Add Text</div>
+                <div class="pdf-tool-btn">↑ Upload PDF</div>
+                <div class="pdf-tool-btn">↓ Download Signed</div>
+              </div>
+              <div class="pdf-doc">
+                <div class="pdf-line short"></div>
+                <div class="pdf-line full"></div>
+                <div class="pdf-line med"></div>
+                <div class="pdf-line full"></div>
+                <div class="pdf-line med"></div>
+                <div class="pdf-line full"></div>
+                <div class="pdf-line short"></div>
+                <div class="pdf-sig-area">
+                  <span class="pdf-sig-label">Signature</span>
+                  <span class="pdf-sig-scrawl">Jay Hook</span>
+                  <span class="pdf-sig-label">Date: 04 / 07 / 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="app-card-body">
+            <p class="app-card-type">Agentic Coding · Workflow Automation</p>
+            <h3>PDF Sign & Annotate</h3>
+            <p>Built entirely with agentic AI coding tools — no manual development. Upload any PDF, draw your signature or drop in typed text, then download the signed document. No printing. No scanning. No fuss.</p>
+            <ul class="app-features">
+              <li>Draw or type a signature directly onto any PDF page</li>
+              <li>Add free-form text annotations anywhere on the document</li>
+              <li>Multi-page navigation with live canvas preview</li>
+              <li>One-click download of the fully signed PDF</li>
+            </ul>
+            <a href="sign-pdf_app.html" target="_blank" rel="noopener" class="app-link">Launch App →</a>
           </div>
         </div>
 
